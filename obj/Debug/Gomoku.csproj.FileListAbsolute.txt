@@ -1,0 +1,15 @@
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\bin\Debug\Gomoku.exe.config
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\bin\Debug\Gomoku.exe
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\bin\Debug\Gomoku.pdb
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\obj\Debug\Gomoku.csprojAssemblyReference.cache
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\obj\Debug\MainWindow.g.cs
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\obj\Debug\App.g.cs
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\obj\Debug\Gomoku_MarkupCompile.cache
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\obj\Debug\Gomoku_MarkupCompile.lref
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\obj\Debug\MainWindow.baml
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\obj\Debug\Gomoku.g.resources
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\obj\Debug\Gomoku.Properties.Resources.resources
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\obj\Debug\Gomoku.csproj.GenerateResource.cache
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\obj\Debug\Gomoku.csproj.CoreCompileInputs.cache
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\obj\Debug\Gomoku.exe
+C:\Users\xili3\source\repos\C# practices\wpf\WpfYoutubeTutorial2\Gomoku\obj\Debug\Gomoku.pdb
