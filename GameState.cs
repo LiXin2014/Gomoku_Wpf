@@ -6,8 +6,8 @@ namespace Gomoku
     public class GameState
     {
         public static List<List<Cell>> Board;
-        private static bool blackSTurn;
 
+        private static bool blackSTurn;
         // Indicate if it's Black's turn
         public static bool BlackSTurn { 
             get { return blackSTurn;  } 
@@ -43,6 +43,7 @@ namespace Gomoku
         public static event EventHandler GameEndedChanged;
         public static event EventHandler WinnerChanged;
 
+        #region check game state
         public static bool SomeoneHasWon(int row, int col)
         {
            return CheckVertical(row, col) || CheckHorizontal(row, col) || CheckDiagonalUpperLeftStart(row, col) || CheckDiagonalUpperRightStart(row, col);
@@ -134,6 +135,33 @@ namespace Gomoku
             }
             return match >= 4;
         }
+        #endregion
+
+        #region Start New Game Command
+        public RelayCommand StartNewGameCommand { get; set; } = new RelayCommand(StartNewGame);
+
+        public static void StartNewGame(object parameter)
+        {
+            // set game state
+            BlackSTurn = true;
+            Steps = 0;
+            GameEnded = false;
+
+            // reset the board
+            int rows = Board.Count;
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < rows; j++)
+                {
+                    Board[i][j].Content = "";
+                    // Raise can execute changed event, CanBeClicked method will be called on each Cell to determin the IsEnabled property for the matching button.
+                    // That's why the GameEnded state must be reset before this line, otherwise CanBeClicked will give wrong result.
+                    Board[i][j].ButtonCommand.RaiseCanExecuteChanged();
+                }
+            }
+
+        }
+        #endregion
     }
 }
 

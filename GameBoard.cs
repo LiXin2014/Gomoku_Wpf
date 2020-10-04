@@ -30,7 +30,7 @@ namespace Gomoku
         }
 
         // Initialize the game
-        public void InitializeGame()
+        private void InitializeGame()
         {
             // set the board
             Board = new List<List<Cell>>();

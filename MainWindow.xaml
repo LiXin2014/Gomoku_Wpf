@@ -18,6 +18,7 @@
 
         <Style TargetType="TextBlock" x:Key="VisibleTillGameOver">
             <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Margin" Value="0 10"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=(local:GameState.GameEnded), UpdateSourceTrigger=PropertyChanged}" Value="True">
                     <Setter Property="Visibility" Value="Hidden"/>
@@ -60,7 +61,7 @@
             <ItemsControl ItemTemplate="{DynamicResource DataTemplate_Level1}" ItemsSource="{Binding Board}"/>
         </Grid>
         <StackPanel Grid.Column="1" DataContext="{Binding GameState}">
-            <Button Content="New Game"/>
+            <Button Content="New Game" Command="{Binding Path=(local:GameState.StartNewGameCommand)}"/>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Style="{StaticResource VisibleTillGameOver}" Text="{Binding Path=(local:GameState.BlackSTurn), UpdateSourceTrigger=PropertyChanged, 
                     Converter={StaticResource BooleanToPlayerConverter}}"/>

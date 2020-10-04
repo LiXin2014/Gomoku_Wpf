@@ -9,7 +9,6 @@ namespace Gomoku
         private string content;
         // Position of the cell in board
         public (int, int) Position { get; set; }
-        public RelayCommand ButtonCommand { get; set; }
 
         /// <summary>
         /// Gets or sets content of a cell.
@@ -27,6 +26,9 @@ namespace Gomoku
             this.ButtonCommand = new RelayCommand(OnClicked, CanBeClicked);
             this.Position = (row, col);
         }
+
+        #region Button command
+        public RelayCommand ButtonCommand { get; set; }
 
         /// <summary>
         /// Called when this cell is clicked
@@ -62,7 +64,9 @@ namespace Gomoku
         {
             return !GameState.GameEnded && (Content == null || String.Equals(Content, String.Empty));
         }
+        #endregion
 
+        #region equals override
         public override bool Equals(Object obj)
         {
             //Check for null and compare run-time types.
@@ -86,5 +90,6 @@ namespace Gomoku
         {
             return !x.Equals(y);
         }
+        #endregion
     }
 }
