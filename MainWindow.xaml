@@ -35,8 +35,19 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <Grid Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left">
+        <Grid Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" DataContext="{Binding GameBoard}">
             <ItemsControl ItemTemplate="{DynamicResource DataTemplate_Level1}" ItemsSource="{Binding Board}"/>
         </Grid>
+        <StackPanel Grid.Column="1" DataContext="{Binding GameState}">
+            <Button Content="New Game"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Next is Black: "/>
+                <TextBlock Text="{Binding Path=(local:GameState.BlackSTurn), UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Winner: "/>
+                <TextBlock Text="{Binding Path=(local:GameState.Winner), UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

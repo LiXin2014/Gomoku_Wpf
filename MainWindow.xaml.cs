@@ -9,9 +9,9 @@ namespace Gomoku
     {
         public MainWindow()
         {
-            GameBoard board = new GameBoard(10);
+            GameModel model = new GameModel();
             InitializeComponent();
-            DataContext = board;
+            DataContext = model;
         }
     }
 }

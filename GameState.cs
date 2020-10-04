@@ -9,12 +9,32 @@ namespace Gomoku
     public class GameState
     {
         public static List<List<Cell>> Board;
+        private static bool blackSTurn;
+
         // Indicate if it's Black's turn
-        public static bool BlackSTurn { get; set; }
+        public static bool BlackSTurn { 
+            get { return blackSTurn;  } 
+            set { 
+                blackSTurn = value;
+                BlackSTurnChanged?.Invoke(null, EventArgs.Empty);
+            } 
+        }
         // Total steps till now
         public static int Steps { get; set; }
         public static bool GameEnded { get; set; }
-        public static string Winner { get; set; }
+
+        private static string winner;
+        public static string Winner {
+            get { return winner; }
+            set
+            {
+                winner = value;
+                WinnerChanged?.Invoke(null, EventArgs.Empty);
+            }
+        }
+
+        public static event EventHandler BlackSTurnChanged;
+        public static event EventHandler WinnerChanged;
 
         public static bool SomeoneHasWon(int row, int col)
         {

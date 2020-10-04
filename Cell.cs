@@ -46,7 +46,6 @@ namespace Gomoku
             {
                 GameState.GameEnded = true;
                 GameState.Winner = GameState.BlackSTurn ? "Black" : "White";
-                MessageBox.Show($"{GameState.Winner} has won!");
                 return;
             }
 
@@ -61,7 +60,7 @@ namespace Gomoku
         /// <returns>True if it can be clicked, false otherwise</returns>
         public bool CanBeClicked(object parameter)
         {
-            return Content == null || String.Equals(Content, String.Empty) && !GameState.GameEnded;
+            return !GameState.GameEnded && (Content == null || String.Equals(Content, String.Empty));
         }
 
         public override bool Equals(Object obj)
