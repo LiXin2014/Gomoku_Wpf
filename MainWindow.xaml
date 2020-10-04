@@ -14,7 +14,8 @@
         </Style>
 
         <DataTemplate x:Key="DataTemplate_Level2">
-            <Button Content="{Binding Content, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="30" Command="{Binding ButtonCommand}"/>
+            <Button Content="{Binding Content, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="30" 
+                    Command="{Binding ButtonCommand}"/>
         </DataTemplate>
 
         <DataTemplate x:Key="DataTemplate_Level1">
