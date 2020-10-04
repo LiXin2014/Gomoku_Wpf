@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gomoku
 {
@@ -21,7 +18,16 @@ namespace Gomoku
         }
         // Total steps till now
         public static int Steps { get; set; }
-        public static bool GameEnded { get; set; }
+
+        private static bool gameEnded;
+        public static bool GameEnded {
+            get { return gameEnded; } 
+            set
+            {
+                gameEnded = value;
+                GameEndedChanged?.Invoke(null, EventArgs.Empty);
+            }
+        }
 
         private static string winner;
         public static string Winner {
@@ -34,6 +40,7 @@ namespace Gomoku
         }
 
         public static event EventHandler BlackSTurnChanged;
+        public static event EventHandler GameEndedChanged;
         public static event EventHandler WinnerChanged;
 
         public static bool SomeoneHasWon(int row, int col)
@@ -129,3 +136,9 @@ namespace Gomoku
         }
     }
 }
+
+/*
+ * Note: How to bind to static properties:
+ * https://docs.microsoft.com/en-us/dotnet/desktop/wpf/getting-started/whats-new?redirectedfrom=MSDN&view=netframeworkdesktop-4.8#static_properties
+ * https://stackoverflow.com/questions/20319857/data-binding-with-static-properties-in-wpf/20322241
+ */

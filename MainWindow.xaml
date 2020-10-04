@@ -4,13 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Gomoku"
+        xmlns:converter="clr-namespace:Gomoku.Converter"
         mc:Ignorable="d"
         ResizeMode="NoResize"
         Title="Gomoku Game" Height="500" Width="700">
     <Window.Resources>
+        <converter:BooleanToPlayerConverter x:Key="BooleanToPlayerConverter"/>
+        
         <Style TargetType="Button">
             <Setter Property="Background" Value="White"/>
             <Setter Property="FontSize" Value="20"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="VisibleTillGameOver">
+            <Setter Property="FontSize" Value="20"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=(local:GameState.GameEnded), UpdateSourceTrigger=PropertyChanged}" Value="True">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="HiddenTillGameOver">
+            <Setter Property="FontSize" Value="25"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=(local:GameState.GameEnded), UpdateSourceTrigger=PropertyChanged}" Value="False">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
 
         <DataTemplate x:Key="DataTemplate_Level2">
@@ -41,12 +62,14 @@
         <StackPanel Grid.Column="1" DataContext="{Binding GameState}">
             <Button Content="New Game"/>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Next is Black: "/>
-                <TextBlock Text="{Binding Path=(local:GameState.BlackSTurn), UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Style="{StaticResource VisibleTillGameOver}" Text="{Binding Path=(local:GameState.BlackSTurn), UpdateSourceTrigger=PropertyChanged, 
+                    Converter={StaticResource BooleanToPlayerConverter}}"/>
+                <TextBlock Style="{StaticResource VisibleTillGameOver}" Text="'s Turn"/>
             </StackPanel>
+            <TextBlock Style="{StaticResource HiddenTillGameOver}" Text="Game Over!"/>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Winner: "/>
-                <TextBlock Text="{Binding Path=(local:GameState.Winner), UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Style="{StaticResource HiddenTillGameOver}" Text="Winner: "/>
+                <TextBlock Style="{StaticResource HiddenTillGameOver}" Text="{Binding Path=(local:GameState.Winner), UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </StackPanel>
     </Grid>
