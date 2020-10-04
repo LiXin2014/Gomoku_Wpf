@@ -36,7 +36,7 @@ namespace Gomoku
         /// <param name="parameter">This is content passed from CommandParameter in xaml</param>
         public void OnClicked(object parameter)
         {
-            if (GameState.BlackSTurn)
+            if (GameState.Instance.BlackSTurn)
             {
                 this.Content = "●";
             } else
@@ -44,15 +44,15 @@ namespace Gomoku
                 this.Content = "○";
             }
 
-            if(GameState.Steps >= 8 && GameState.SomeoneHasWon(Position.Item1, Position.Item2))
+            if(GameState.Instance.Steps >= 8 && GameState.Instance.SomeoneHasWon(Position.Item1, Position.Item2))
             {
-                GameState.GameEnded = true;
-                GameState.Winner = GameState.BlackSTurn ? "Black" : "White";
+                GameState.Instance.GameEnded = true;
+                GameState.Instance.Winner = GameState.Instance.BlackSTurn ? "Black" : "White";
                 return;
             }
 
-            GameState.Steps++;
-            GameState.BlackSTurn = !GameState.BlackSTurn;
+            GameState.Instance.Steps++;
+            GameState.Instance.BlackSTurn = !GameState.Instance.BlackSTurn;
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Gomoku
         /// <returns>True if it can be clicked, false otherwise</returns>
         public bool CanBeClicked(object parameter)
         {
-            return !GameState.GameEnded && (Content == null || String.Equals(Content, String.Empty));
+            return !GameState.Instance.GameEnded && (Content == null || String.Equals(Content, String.Empty));
         }
         #endregion
 

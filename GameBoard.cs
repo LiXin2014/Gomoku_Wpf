@@ -45,10 +45,10 @@ namespace Gomoku
             }
 
             // set game state
-            GameState.BlackSTurn = true;
-            GameState.Steps = 0;
-            GameState.GameEnded = false;
-            GameState.Board = Board;
+            GameState.Instance.BlackSTurn = true;
+            GameState.Instance.Steps = 0;
+            GameState.Instance.GameEnded = false;
+            GameState.Instance.Board = Board;
         }
     }
 }

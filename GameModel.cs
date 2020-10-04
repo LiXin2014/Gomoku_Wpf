@@ -10,11 +10,13 @@ namespace Gomoku
     {
         public GameBoard GameBoard { get; set; }
         public GameState GameState { get; set; }
+        public SaveLoadGame SaveGame { get; set; }
 
         public GameModel()
         {
             GameBoard = new GameBoard(10);
-            GameState = new GameState();
+            GameState = GameState.Instance;
+            SaveGame = new SaveLoadGame();
         }
     }
 }

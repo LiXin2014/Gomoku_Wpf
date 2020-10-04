@@ -1,60 +1,69 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using MessagePack;
 
 namespace Gomoku
 {
-    public class GameState
+    [MessagePackObject(keyAsPropertyName: true)]
+    public sealed class GameState : ObservableObject
     {
-        public static List<List<Cell>> Board;
+        private GameState() 
+        {
+            StartNewGameCommand = new RelayCommand(StartNewGame);
+        }
+        public static GameState Instance { get; } = new GameState();
 
-        private static bool blackSTurn;
+        #region properties
+        public List<List<Cell>> Board { get; set; }
+
+        private bool blackSTurn;
         // Indicate if it's Black's turn
-        public static bool BlackSTurn { 
-            get { return blackSTurn;  } 
-            set { 
+        public bool BlackSTurn
+        {
+            get { return blackSTurn; }
+            set
+            {
                 blackSTurn = value;
-                BlackSTurnChanged?.Invoke(null, EventArgs.Empty);
-            } 
+                OnPropertyChanged(nameof(BlackSTurn));
+            }
         }
         // Total steps till now
-        public static int Steps { get; set; }
+        public int Steps { get; set; }
 
-        private static bool gameEnded;
-        public static bool GameEnded {
-            get { return gameEnded; } 
+        private bool gameEnded;
+        public bool GameEnded
+        {
+            get { return gameEnded; }
             set
             {
                 gameEnded = value;
-                GameEndedChanged?.Invoke(null, EventArgs.Empty);
+                OnPropertyChanged(nameof(GameEnded));
             }
         }
 
-        private static string winner;
-        public static string Winner {
+        private string winner;
+        public string Winner
+        {
             get { return winner; }
             set
             {
                 winner = value;
-                WinnerChanged?.Invoke(null, EventArgs.Empty);
+                OnPropertyChanged(nameof(Winner));
             }
         }
-
-        public static event EventHandler BlackSTurnChanged;
-        public static event EventHandler GameEndedChanged;
-        public static event EventHandler WinnerChanged;
+        #endregion
 
         #region check game state
-        public static bool SomeoneHasWon(int row, int col)
+        public bool SomeoneHasWon(int row, int col)
         {
-           return CheckVertical(row, col) || CheckHorizontal(row, col) || CheckDiagonalUpperLeftStart(row, col) || CheckDiagonalUpperRightStart(row, col);
+            return CheckVertical(row, col) || CheckHorizontal(row, col) || CheckDiagonalUpperLeftStart(row, col) || CheckDiagonalUpperRightStart(row, col);
         }
 
-        private static bool CheckVertical(int row, int col) 
+        private bool CheckVertical(int row, int col)
         {
             int match = 0;
             // go up
             int startRow = row - 1;
-            while(startRow >= 0 && Board[startRow][col] == Board[row][col])
+            while (startRow >= 0 && Board[startRow][col] == Board[row][col])
             {
                 startRow--;
                 match++;
@@ -69,7 +78,7 @@ namespace Gomoku
             return match >= 4;
         }
 
-        private static bool CheckHorizontal(int row, int col) 
+        private bool CheckHorizontal(int row, int col)
         {
             int match = 0;
             // go left
@@ -88,7 +97,7 @@ namespace Gomoku
             }
             return match >= 4;
         }
-        private static bool CheckDiagonalUpperLeftStart(int row, int col)
+        private bool CheckDiagonalUpperLeftStart(int row, int col)
         {
             int match = 0;
             // go up
@@ -112,7 +121,7 @@ namespace Gomoku
             return match >= 4;
         }
 
-        private static bool CheckDiagonalUpperRightStart(int row, int col)
+        private bool CheckDiagonalUpperRightStart(int row, int col)
         {
             int match = 0;
             // go up
@@ -138,9 +147,10 @@ namespace Gomoku
         #endregion
 
         #region Start New Game Command
-        public RelayCommand StartNewGameCommand { get; set; } = new RelayCommand(StartNewGame);
+        [IgnoreMember]
+        public RelayCommand StartNewGameCommand { get; set; }
 
-        public static void StartNewGame(object parameter)
+        public void StartNewGame(object parameter)
         {
             // set game state
             BlackSTurn = true;
@@ -159,7 +169,6 @@ namespace Gomoku
                     Board[i][j].ButtonCommand.RaiseCanExecuteChanged();
                 }
             }
-
         }
         #endregion
     }
