@@ -4,51 +4,44 @@ namespace Gomoku
 {
     public class GameBoard : ObservableObject
     {
-        private List<List<Cell>> board;
-        // Number of rows in the board
-        private int rows;
+        private readonly GameState _innerState;
 
         /// <summary>
-        /// Gets or sets board of the game
+        /// Gets board of the game
         /// </summary>
-        public List<List<Cell>> Board { 
-            get { return this.board; } 
-            set { 
-                this.board = value;
-                OnPropertyChanged(nameof(Board));
-            } 
-        }
+        public List<List<Cell>> Board => _innerState.Board;
 
         /// <summary>
         /// Initialize a GameBoard instance
         /// </summary>
-        /// <param name="rows">Number of rows for the game board</param>
-        public GameBoard(int rows)
+        /// <param name="innerState">Game state</param>
+        public GameBoard(GameState innerState)
         {
-            this.rows = rows;
+            _innerState = innerState ?? throw new System.ArgumentNullException(nameof(innerState));
             InitializeGame();
+            // subscribe to game state's property changed event
+            _innerState.PropertyChanged += _innerState_PropertyChanged;
+        }
+
+        /// <summary>
+        /// Notify UI the board is updated if the game state's board is updated.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _innerState_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(_innerState.Board))
+            {
+                OnPropertyChanged(nameof(Board));
+            }
         }
 
         // Initialize the game
         private void InitializeGame()
         {
-            // set the board
-            Board = new List<List<Cell>>();
-            for (int i = 0; i < this.rows; i++)
-            {
-                List<Cell> row = new List<Cell>();
-                Board.Add(row);
-                for (int j = 0; j < this.rows; j++)
-                {
-                    row.Add(new Cell(i, j));
-                }
-            }
-
-            // set game state
-            GameState.Instance.BlackSTurn = true;
-            GameState.Instance.Steps = 0;
-            GameState.Instance.GameEnded = false;
-            GameState.Instance.Board = Board;
+            _innerState.BlackSTurn = true;
+            _innerState.Steps = 0;
+            _innerState.GameEnded = false;
         }
     }
 }

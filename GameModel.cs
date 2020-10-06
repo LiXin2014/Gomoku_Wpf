@@ -14,7 +14,7 @@ namespace Gomoku
 
         public GameModel()
         {
-            GameBoard = new GameBoard(10);
+            GameBoard = new GameBoard(GameState.Instance);
             GameState = GameState.Instance;
             SaveGame = new SaveLoadGame();
         }

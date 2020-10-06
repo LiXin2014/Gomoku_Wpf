@@ -10,12 +10,33 @@ namespace Gomoku
         private GameState() 
         {
             StartNewGameCommand = new RelayCommand(StartNewGame);
+
+            Board = new List<List<Cell>>();
+            for (int i = 0; i < Constants.NumOfRows; i++)
+            {
+                List<Cell> row = new List<Cell>();
+                Board.Add(row);
+                for (int j = 0; j < Constants.NumOfRows; j++)
+                {
+                    row.Add(new Cell(i, j));
+                }
+            }
         }
         public static GameState Instance { get; } = new GameState();
 
+        [IgnoreMember]
+        private List<List<Cell>> board;
         #region properties
         [Key(0)]
-        public List<List<Cell>> Board { get; set; }
+        public List<List<Cell>> Board
+        {
+            get { return board; }
+            set
+            {
+                board = value;
+                OnPropertyChanged(nameof(Board));
+            }
+        }
 
         [IgnoreMember]
         private bool blackSTurn;
