@@ -60,17 +60,23 @@
         <Grid Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" DataContext="{Binding GameBoard}">
             <ItemsControl ItemTemplate="{DynamicResource DataTemplate_Level1}" ItemsSource="{Binding Board}"/>
         </Grid>
-        <StackPanel Grid.Column="1" DataContext="{Binding GameState}">
-            <Button Content="New Game" Command="{Binding Path=(local:GameState.StartNewGameCommand)}"/>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Style="{StaticResource VisibleTillGameOver}" Text="{Binding Path=(local:GameState.BlackSTurn), UpdateSourceTrigger=PropertyChanged, 
+        <StackPanel Grid.Column="1">
+            <StackPanel DataContext="{Binding GameState}">
+                <Button Content="New Game" Command="{Binding Path=StartNewGameCommand}"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource VisibleTillGameOver}" Text="{Binding Path=BlackSTurn, UpdateSourceTrigger=PropertyChanged, 
                     Converter={StaticResource BooleanToPlayerConverter}}"/>
-                <TextBlock Style="{StaticResource VisibleTillGameOver}" Text="'s Turn"/>
+                    <TextBlock Style="{StaticResource VisibleTillGameOver}" Text="'s Turn"/>
+                </StackPanel>
+                <TextBlock Style="{StaticResource HiddenTillGameOver}" Text="Game Over!"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource HiddenTillGameOver}" Text="Winner: "/>
+                    <TextBlock Style="{StaticResource HiddenTillGameOver}" Text="{Binding Path=Winner, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
             </StackPanel>
-            <TextBlock Style="{StaticResource HiddenTillGameOver}" Text="Game Over!"/>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Style="{StaticResource HiddenTillGameOver}" Text="Winner: "/>
-                <TextBlock Style="{StaticResource HiddenTillGameOver}" Text="{Binding Path=(local:GameState.Winner), UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel DataContext="{Binding SaveGame}">
+                <Button Content="Save Game" Command="{Binding Path=(local:SaveLoadGame.SaveGameCommand)}"/>
+                <Button Content="Open Game" Command="{Binding Path=(local:SaveLoadGame.OpenGameCommand)}"/>
             </StackPanel>
         </StackPanel>
     </Grid>

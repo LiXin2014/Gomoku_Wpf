@@ -1,18 +1,25 @@
-﻿using System;
-using System.Windows;
+﻿using MessagePack;
+using System;
 
 namespace Gomoku
 {
+    [MessagePackObject]
     public class Cell : ObservableObject
     {
         // Content of the cell
+        [IgnoreMember]
         private string content;
         // Position of the cell in board
-        public (int, int) Position { get; set; }
+        [Key(0)]
+        public int Row { get; set; }
+
+        [Key(1)]
+        public int Col { get; set; }
 
         /// <summary>
         /// Gets or sets content of a cell.
         /// </summary>
+        [Key(2)]
         public string Content { 
             get { return content; } 
             set { 
@@ -24,10 +31,12 @@ namespace Gomoku
         public Cell(int row, int col)
         {
             this.ButtonCommand = new RelayCommand(OnClicked, CanBeClicked);
-            this.Position = (row, col);
+            this.Row = row;
+            this.Col = col;
         }
 
         #region Button command
+        [IgnoreMember]
         public RelayCommand ButtonCommand { get; set; }
 
         /// <summary>
@@ -44,7 +53,7 @@ namespace Gomoku
                 this.Content = "○";
             }
 
-            if(GameState.Instance.Steps >= 8 && GameState.Instance.SomeoneHasWon(Position.Item1, Position.Item2))
+            if(GameState.Instance.Steps >= 8 && GameState.Instance.SomeoneHasWon(this.Row, this.Col))
             {
                 GameState.Instance.GameEnded = true;
                 GameState.Instance.Winner = GameState.Instance.BlackSTurn ? "Black" : "White";

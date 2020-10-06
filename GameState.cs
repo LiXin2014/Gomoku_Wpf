@@ -3,9 +3,10 @@ using MessagePack;
 
 namespace Gomoku
 {
-    [MessagePackObject(keyAsPropertyName: true)]
+    [MessagePackObject]
     public sealed class GameState : ObservableObject
     {
+        [SerializationConstructor]
         private GameState() 
         {
             StartNewGameCommand = new RelayCommand(StartNewGame);
@@ -13,10 +14,13 @@ namespace Gomoku
         public static GameState Instance { get; } = new GameState();
 
         #region properties
+        [Key(0)]
         public List<List<Cell>> Board { get; set; }
 
+        [IgnoreMember]
         private bool blackSTurn;
         // Indicate if it's Black's turn
+        [Key(1)]
         public bool BlackSTurn
         {
             get { return blackSTurn; }
@@ -27,9 +31,12 @@ namespace Gomoku
             }
         }
         // Total steps till now
+        [Key(2)]
         public int Steps { get; set; }
 
+        [IgnoreMember]
         private bool gameEnded;
+        [Key(3)]
         public bool GameEnded
         {
             get { return gameEnded; }
@@ -40,7 +47,9 @@ namespace Gomoku
             }
         }
 
+        [IgnoreMember]
         private string winner;
+        [Key(4)]
         public string Winner
         {
             get { return winner; }
@@ -171,6 +180,14 @@ namespace Gomoku
             }
         }
         #endregion
+
+        public void LoadSavedGame(GameState savedGame)
+        {
+            Board = savedGame.Board;
+            BlackSTurn = savedGame.BlackSTurn;
+            Steps = savedGame.Steps;
+            GameEnded = savedGame.GameEnded;
+        }
     }
 }
 
