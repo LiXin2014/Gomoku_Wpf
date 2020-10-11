@@ -120,7 +120,7 @@ namespace Gomoku
             }
             // go right
             startCol = col + 1;
-            while (startCol < Board.Count && Board[startCol][col] == Board[row][col])
+            while (startCol < Board.Count && Board[row][startCol] == Board[row][col])
             {
                 startCol++;
                 match++;
