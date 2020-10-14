@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using MessagePack;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Gomoku
 {
-    [MessagePackObject]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public sealed class GameState : ObservableObject
     {
-        [SerializationConstructor]
-        private GameState() 
+        [JsonConstructor]
+        private GameState()
         {
             StartNewGameCommand = new RelayCommand(StartNewGame);
 
@@ -22,12 +22,19 @@ namespace Gomoku
                 }
             }
         }
+
         public static GameState Instance { get; } = new GameState();
 
-        [IgnoreMember]
         private List<List<Cell>> board;
         #region properties
-        [Key(0)]
+        // https://stackoverflow.com/questions/34668126/newtonsoft-json-appends-lists-when-deserializing-with-fromobject
+        // Without this attribute, board count would be 20, first 10 are from constructor, which is always called in deserializing,
+        // second 10 is from deserialized data. The default behavior is appending, we need to change the behavior to replace.
+        // There are two solutions. 
+        // 1. Add a parameter for constructor. Setting it to be true when it's created from Instance, otherwise it's default to false, 
+        //    this way we can differentiate whether it's from our own code or deserializing process.
+        // 2. Use attribute ObjectCreationHandling.Replace
+        [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
         public List<List<Cell>> Board
         {
             get { return board; }
@@ -38,10 +45,9 @@ namespace Gomoku
             }
         }
 
-        [IgnoreMember]
         private bool blackSTurn;
         // Indicate if it's Black's turn
-        [Key(1)]
+        [JsonProperty]
         public bool BlackSTurn
         {
             get { return blackSTurn; }
@@ -52,12 +58,11 @@ namespace Gomoku
             }
         }
         // Total steps till now
-        [Key(2)]
+        [JsonProperty]
         public int Steps { get; set; }
 
-        [IgnoreMember]
         private bool gameEnded;
-        [Key(3)]
+        [JsonProperty]
         public bool GameEnded
         {
             get { return gameEnded; }
@@ -68,9 +73,8 @@ namespace Gomoku
             }
         }
 
-        [IgnoreMember]
         private string winner;
-        [Key(4)]
+        [JsonProperty]
         public string Winner
         {
             get { return winner; }
@@ -177,7 +181,6 @@ namespace Gomoku
         #endregion
 
         #region Start New Game Command
-        [IgnoreMember]
         public RelayCommand StartNewGameCommand { get; set; }
 
         public void StartNewGame(object parameter)

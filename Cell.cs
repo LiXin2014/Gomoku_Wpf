@@ -1,25 +1,23 @@
-﻿using MessagePack;
+﻿using Newtonsoft.Json;
 using System;
 
 namespace Gomoku
 {
-    [MessagePackObject]
+    [JsonObject(MemberSerialization.OptIn)]
     public class Cell : ObservableObject
     {
         // Content of the cell
-        [IgnoreMember]
         private string content;
         // Position of the cell in board
-        [Key(0)]
+        [JsonProperty]
         public int Row { get; set; }
-
-        [Key(1)]
+        [JsonProperty]
         public int Col { get; set; }
 
         /// <summary>
         /// Gets or sets content of a cell.
         /// </summary>
-        [Key(2)]
+        [JsonProperty]
         public string Content { 
             get { return content; } 
             set { 
@@ -36,7 +34,6 @@ namespace Gomoku
         }
 
         #region Button command
-        [IgnoreMember]
         public RelayCommand ButtonCommand { get; set; }
 
         /// <summary>
