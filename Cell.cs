@@ -8,6 +8,8 @@ namespace Gomoku
     {
         // Content of the cell
         private string content;
+        private readonly GameState state;
+
         // Position of the cell in board
         [JsonProperty]
         public int Row { get; set; }
@@ -26,11 +28,12 @@ namespace Gomoku
             } 
         }
 
-        public Cell(int row, int col)
+        public Cell(int row, int col, GameState state)
         {
-            this.ButtonCommand = new RelayCommand(OnClicked, CanBeClicked);
+            this.ButtonCommand = new RelayCommand(OnClicked, UnClicked, CanBeClicked);
             this.Row = row;
             this.Col = col;
+            this.state = state;
         }
 
         #region Button command
@@ -58,6 +61,26 @@ namespace Gomoku
             }
 
             GameState.Instance.Steps++;
+            GameState.Instance.BlackSTurn = !GameState.Instance.BlackSTurn;
+
+            state.UndoList.AddStep(ButtonCommand);
+        }
+
+        /// <summary>
+        /// Called when user wants to undo a step.
+        /// </summary>
+        /// <param name="parameter"></param>
+        public void UnClicked()
+        {
+            this.Content = "";
+
+            if (GameState.Instance.GameEnded)
+            {
+                GameState.Instance.GameEnded = false;
+                GameState.Instance.Winner = "";
+            }
+
+            GameState.Instance.Steps--;
             GameState.Instance.BlackSTurn = !GameState.Instance.BlackSTurn;
         }
 

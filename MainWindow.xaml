@@ -83,7 +83,8 @@
         </Grid>
         <StackPanel Grid.Column="1">
             <StackPanel DataContext="{Binding GameState}">
-                <Button Content="New Game" Command="{Binding Path=StartNewGameCommand}"/>
+                <Button Content="New Game" Command="{Binding Path=StartNewGameCommand}" Margin="0 10"/>
+                <Button Content="Undo" Command="{Binding Path=UndoList.UndoCommand}"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource VisibleTillGameOver}" Text="{Binding Path=BlackSTurn, UpdateSourceTrigger=PropertyChanged, 
                     Converter={StaticResource BooleanToPlayerConverter}}"/>

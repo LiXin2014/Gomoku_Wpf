@@ -36,7 +36,10 @@ namespace Gomoku
                 text = File.ReadAllText(openFileDialog.FileName);
 
             GameState gameState = JsonConvert.DeserializeObject<GameState>(text);
-            GameState.Instance.LoadSavedGame(gameState);
+            if(gameState != null)
+            {
+                GameState.Instance.LoadSavedGame(gameState);
+            }
         }
     }
 }
