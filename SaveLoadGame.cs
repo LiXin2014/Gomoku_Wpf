@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
 using System.IO;
 
 namespace Gomoku
@@ -10,27 +11,31 @@ namespace Gomoku
 
         public static void SaveGame(object parameter)
         {
-
             var gameState = GameState.Instance;
-            string path = Directory.GetCurrentDirectory() + "\\GameState.txt";
 
-            // deserialize JSON directly from a file
-            using (StreamWriter file = File.CreateText(path))
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == true)
             {
+
                 JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, gameState);
+                using (StreamWriter file = new StreamWriter(saveFileDialog.FileName))
+                {
+                    serializer.Serialize(file, gameState);
+                }
+                // above using code block was written as below line at first, it would be wrong because 
+                // the streamwriter is not flushed (needed for content to be actually written) and disposed.
+                //serializer.Serialize(new StreamWriter(saveFileDialog.FileName), gameState);
             }
         }
 
         public static void OpenGame(object parameter)
         {
-            string path = Directory.GetCurrentDirectory() + "\\GameState.txt";
-            if (!File.Exists(path))
-            {
-                throw new FileNotFoundException();
-            }
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            string text = "";
+            if (openFileDialog.ShowDialog() == true)
+                text = File.ReadAllText(openFileDialog.FileName);
 
-            GameState gameState = JsonConvert.DeserializeObject<GameState>(File.ReadAllText(path));
+            GameState gameState = JsonConvert.DeserializeObject<GameState>(text);
             GameState.Instance.LoadSavedGame(gameState);
         }
     }
