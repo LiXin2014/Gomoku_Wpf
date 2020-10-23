@@ -10,7 +10,6 @@ namespace Gomoku
         private GameState()
         {
             StartNewGameCommand = new RelayCommand(StartNewGame);
-            UndoList = new CommandList();
 
             Board = new List<List<Cell>>();
             for (int i = 0; i < Constants.NumOfRows; i++)
@@ -19,12 +18,10 @@ namespace Gomoku
                 Board.Add(row);
                 for (int j = 0; j < Constants.NumOfRows; j++)
                 {
-                    row.Add(new Cell(i, j, this));
+                    row.Add(new Cell(i, j));
                 }
             }
         }
-
-        public CommandList UndoList { get; set; }
 
         public static GameState Instance { get; } = new GameState();
 

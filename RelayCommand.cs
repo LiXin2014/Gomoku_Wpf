@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Windows.Input;
 
 namespace Gomoku
 {
-    public class RelayCommand : IUndoableCommand
+    public class RelayCommand : ICommand
     {
         /// <summary>
         /// CanExecute changed event, this is bind to button's IsEnabled property
@@ -10,14 +11,11 @@ namespace Gomoku
         public event EventHandler CanExecuteChanged;
 
         private Action<object> execute;
-        private Action unExecute;
         private Func<object, bool> canExecute;
 
-        public RelayCommand(Action<object> execute) : this(execute, null, null) { }
+        public RelayCommand(Action<object> execute) : this(execute, null) { }
 
-        public RelayCommand(Action<object> execute, Action unExecute) : this(execute, unExecute, null) { }
-
-        public RelayCommand(Action<object> execute, Action unExecute, Func<object, bool> canExecute)
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute)
         {
             if(execute == null)
             {
@@ -25,7 +23,6 @@ namespace Gomoku
             }
 
             this.execute = execute;
-            this.unExecute = unExecute;
             this.canExecute = canExecute;
         }
 
@@ -51,12 +48,6 @@ namespace Gomoku
         public void Execute(object parameter)
         {
             execute(parameter);
-            RaiseCanExecuteChanged();
-        }
-
-        public void UnExecute()
-        {
-            unExecute();
             RaiseCanExecuteChanged();
         }
     }
