@@ -67,9 +67,11 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left">
+            <!--Board Grid-->
             <Grid DataContext="{Binding GameBoard}">
                 <ItemsControl ItemTemplate="{DynamicResource DataTemplate_Level1}" ItemsSource="{Binding Board}"/>
             </Grid>
+            <!--An overlapping grid that show up if game is over-->
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource HiddenTillGameOver}" 
                   DataContext="{Binding GameState}">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -83,7 +85,8 @@
         </Grid>
         <StackPanel Grid.Column="1">
             <StackPanel DataContext="{Binding GameState}">
-                <Button Content="New Game" Command="{Binding Path=StartNewGameCommand}"/>
+                <Button Content="New Game" Command="{Binding Path=StartNewGameCommand}" Margin="0 10"/>
+                <Button Content="Undo" Command="{Binding Path=UndoCommand}"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource VisibleTillGameOver}" Text="{Binding Path=BlackSTurn, UpdateSourceTrigger=PropertyChanged, 
                     Converter={StaticResource BooleanToPlayerConverter}}"/>

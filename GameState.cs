@@ -10,6 +10,7 @@ namespace Gomoku
         private GameState()
         {
             StartNewGameCommand = new RelayCommand(StartNewGame);
+            UndoCommand = new UndoAStep().UndoAStepCommand;
 
             Board = new List<List<Cell>>();
             for (int i = 0; i < Constants.NumOfRows; i++)
@@ -181,7 +182,7 @@ namespace Gomoku
         #endregion
 
         #region Start New Game Command
-        public RelayCommand StartNewGameCommand { get; set; }
+        public RelayCommand StartNewGameCommand { get; private set; }
 
         public void StartNewGame(object parameter)
         {
@@ -189,6 +190,7 @@ namespace Gomoku
             BlackSTurn = true;
             Steps = 0;
             GameEnded = false;
+            StepList.Instance.Steps.Clear();
 
             // reset the board
             int rows = Board.Count;
@@ -205,12 +207,27 @@ namespace Gomoku
         }
         #endregion
 
+        public RelayCommand UndoCommand { get; private set; }
+
         public void LoadSavedGame(GameState savedGame)
         {
             Board = savedGame.Board;
             BlackSTurn = savedGame.BlackSTurn;
             Steps = savedGame.Steps;
             GameEnded = savedGame.GameEnded;
+            GameState.Instance.UndoCommand.RaiseCanExecuteChanged();
+        }
+
+        public void ResetAllCellsCanExecute()
+        {
+            int rows = Board.Count;
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < rows; j++)
+                {
+                    Board[i][j].ButtonCommand.RaiseCanExecuteChanged();
+                }
+            }
         }
     }
 }
