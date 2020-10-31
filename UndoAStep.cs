@@ -25,12 +25,10 @@ namespace Gomoku
             {
                 GameState.Instance.GameEnded = false;
                 GameState.Instance.Winner = "";
-                GameState.Instance.ResetBoard();
             }
 
             Step lastStep = StepList.Instance.GetLastStep();
             GameState.Instance.Board[lastStep.Row][lastStep.Col].Content = "";
-            GameState.Instance.Board[lastStep.Row][lastStep.Col].ButtonCommand.RaiseCanExecuteChanged();
 
             GameState.Instance.Steps--;
             GameState.Instance.BlackSTurn = !GameState.Instance.BlackSTurn;

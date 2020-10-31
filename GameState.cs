@@ -70,8 +70,16 @@ namespace Gomoku
             get { return gameEnded; }
             set
             {
-                gameEnded = value;
-                OnPropertyChanged(nameof(GameEnded));
+                if (gameEnded != value)
+                {
+                    gameEnded = value;
+                    OnPropertyChanged(nameof(GameEnded));
+                    // if game state changes from ended to not ended, we need to reset board.
+                    if (!value)
+                    {
+                        this.ResetBoard();
+                    }
+                }
             }
         }
 
@@ -187,20 +195,17 @@ namespace Gomoku
 
         public void StartNewGame(object parameter)
         {
+            // Clear the board
+            this.ResetBoard((i, j) =>
+            {
+                Board[i][j].Content = "";
+            });
+
             // set game state
             BlackSTurn = true;
             Steps = 0;
             GameEnded = false;
             StepList.Instance.Steps.Clear();
-
-            // reset the board
-            this.ResetBoard((i, j) =>
-            {
-                Board[i][j].Content = "";
-                // Raise can execute changed event, CanBeClicked method will be called on each Cell to determin the IsEnabled property for the matching button.
-                // That's why the GameEnded state must be reset before this line, otherwise CanBeClicked will give wrong result.
-                Board[i][j].ButtonCommand.RaiseCanExecuteChanged();
-            });
         }
         #endregion
 

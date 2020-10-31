@@ -23,9 +23,13 @@ namespace Gomoku
         [JsonProperty]
         public string Content { 
             get { return content; } 
-            set { 
-                this.content = value;
-                OnPropertyChanged(nameof(Content));
+            set {
+                if (this.content != value)
+                {
+                    this.content = value;
+                    OnPropertyChanged(nameof(Content));
+                    this.ButtonCommand.RaiseCanExecuteChanged();
+                }
             } 
         }
 
