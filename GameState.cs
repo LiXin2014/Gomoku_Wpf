@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Gomoku
@@ -193,17 +194,13 @@ namespace Gomoku
             StepList.Instance.Steps.Clear();
 
             // reset the board
-            int rows = Board.Count;
-            for (int i = 0; i < rows; i++)
+            this.ResetBoard((i, j) =>
             {
-                for (int j = 0; j < rows; j++)
-                {
-                    Board[i][j].Content = "";
-                    // Raise can execute changed event, CanBeClicked method will be called on each Cell to determin the IsEnabled property for the matching button.
-                    // That's why the GameEnded state must be reset before this line, otherwise CanBeClicked will give wrong result.
-                    Board[i][j].ButtonCommand.RaiseCanExecuteChanged();
-                }
-            }
+                Board[i][j].Content = "";
+                // Raise can execute changed event, CanBeClicked method will be called on each Cell to determin the IsEnabled property for the matching button.
+                // That's why the GameEnded state must be reset before this line, otherwise CanBeClicked will give wrong result.
+                Board[i][j].ButtonCommand.RaiseCanExecuteChanged();
+            });
         }
         #endregion
 
@@ -218,14 +215,21 @@ namespace Gomoku
             GameState.Instance.UndoCommand.RaiseCanExecuteChanged();
         }
 
-        public void ResetAllCellsCanExecute()
+        public void ResetBoard(Action<int, int> action = null)
         {
             int rows = Board.Count;
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < rows; j++)
                 {
-                    Board[i][j].ButtonCommand.RaiseCanExecuteChanged();
+                    if (action != null)
+                    {
+                        action(i, j);
+                    }
+                    else
+                    {
+                        Board[i][j].ButtonCommand.RaiseCanExecuteChanged();
+                    }
                 }
             }
         }

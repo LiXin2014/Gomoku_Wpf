@@ -25,7 +25,7 @@ namespace Gomoku
             {
                 GameState.Instance.GameEnded = false;
                 GameState.Instance.Winner = "";
-                GameState.Instance.ResetAllCellsCanExecute();
+                GameState.Instance.ResetBoard();
             }
 
             Step lastStep = StepList.Instance.GetLastStep();
